@@ -10,13 +10,10 @@ main_window.title("Chat Lobby")
 
 name_window = tkinter.Tk()
 
-
 message = tkinter.StringVar()
 name = tkinter.StringVar()
 
 def set_name():
-    #main_window.attributes('-topmost', False)
-
     name_window.attributes('-topmost', True)
     name_window.title("Name")
     name_window.lift()
@@ -45,7 +42,6 @@ def receive():
 
 def send(event=None):
         socket.send(bytes(message.get(), "utf8"))
-        #text_box.insert(tkinter.END, "Me: " + message.get())
         message.set("")
 
 if __name__ == "__main__":
