@@ -2,7 +2,7 @@ import socket
 import tkinter
 from threading import Thread
 
-HOST = '10.0.0.174'
+HOST = '71.196.93.132'
 PORT = 6667
 
 main_window = tkinter.Tk()
@@ -34,14 +34,16 @@ def send_name(name,event=None):
     name_window.destroy()
     main_window.attributes('-topmost', True)
     main_window.focus_force()
+    entry = tkinter.Entry(main_window, textvariable=message, width=80)
+    entry.pack(side=tkinter.LEFT)
+    entry.bind("<Return>", send)
 
 def receive():
     while True:
         response = socket.recv(1024)
-        text_box.insert(tkinter.END, "Server: " + response.decode())
+        text_box.insert(tkinter.END, response.decode())
 
 def send(event=None):
-        print(message.get())
         socket.send(bytes(message.get(), "utf8"))
         #text_box.insert(tkinter.END, "Me: " + message.get())
         message.set("")
@@ -49,10 +51,6 @@ def send(event=None):
 if __name__ == "__main__":
     text_box = tkinter.Listbox(main_window, height=20, width=100)
     text_box.pack()
-
-    entry = tkinter.Entry(main_window, textvariable=message, width=80)
-    entry.pack(side=tkinter.LEFT)
-    entry.bind("<Return>", send)
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket:
         socket.connect((HOST, PORT))
