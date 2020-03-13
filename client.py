@@ -5,67 +5,55 @@ from threading import Thread
 HOST = '10.0.0.174'
 PORT = 6667
 
-mainWind = tkinter.Tk()     #create tkinter obj/window
-nameWin = tkinter.Tk()
-mainWind.title("Chat Lobby")
-msg = tkinter.StringVar()   #create textbox at bottom of tkinter
-nameInput = tkinter.StringVar()
-nameInput.set("")
+main_window = tkinter.Tk()
+main_window.title("Chat Lobby")
 
-def name():
-    #mainWind.wait_window()
-    nameWin.title("")
-    nameWin.lift()
-    nameWin.attributes('-topmost', True)
-    mainWind.attributes('-topmost', False)
-    userName = tkinter.Entry(nameWin, textvariable=nameInput, width=40)
-    userName.pack(side=tkinter.LEFT)
-    userNamePrompt = tkinter.Label(nameWin, text="Enter your name.")
-    userNamePrompt.pack()
-    userName.bind("<Return>", nameSend)  #make own destroy function
-    #nameWin.mainloop()
+name_window = tkinter.Tk()
 
-    #userName.bind("<Return>", nameWin.destroy)
-    #nameWin.destroy()
+def set_name():
+    main_window.attributes('-topmost', False)
 
-def recvServ():
+    name_window.attributes('-topmost', True)
+    name_window.title("")
+    name_window.lift()
+
+    name = tkinter.StringVar()
+    name_entry = tkinter.Entry(name_window, textvariable=name, width=40)
+    name_entry.pack(side=tkinter.LEFT)
+    name_entry.bind("<Return>", lambda s: send_name(name))
+
+    prompt = tkinter.Label(name_window, text="Enter your name.")
+    prompt.pack()
+
+
+def send_name(name,event=None):
+    socket.send(bytes(name.get(), "utf8"))
+    name_window.destroy()
+
+
+def receive():
     while True:
         response = socket.recv(1024)
-        textBox.insert(tkinter.END, "Server: " + response.decode())
-        #print("Server: " + response.decode())
+        text_box.insert(tkinter.END, "Server: " + response.decode())
+
 
 def send(event=None):
         socket.send(bytes(msg.get(), "utf8"))
-        textBox.insert(tkinter.END, "Me: " + msg.get())
+        text_box.insert(tkinter.END, "Me: " + msg.get())
         msg.set("")
-        #textBox.pack()
 
-def nameSend(event=None):
-    socket.send(bytes(nameInput.get(), "utf8"))
-    nameWin.destroy()
+if __name__ == "__main__":
+    text_box = tkinter.Listbox(main_window, height=20, width=100)
+    text_box.pack()
 
-recvThread = Thread(target=recvServ)
-sendThread = Thread(target=send)
+    message = tkinter.StringVar()
 
-textBox = tkinter.Listbox(mainWind, height=20, width=100)
-textBox.pack()
+    entry = tkinter.Entry(main_window, textvariable=message, width=80)
+    entry.bind("<Return>", send)
+    entry.pack(side=tkinter.LEFT)
 
-text = tkinter.Text(mainWind)
-
-
-       #makes the window accept text?
-print("Step 2")
-#text.pack()
-usrInput = tkinter.Entry(mainWind, textvariable=msg, width=80)
-usrInput.pack(side=tkinter.LEFT)
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket:
-    socket.connect((HOST, PORT))        #IP & port number
-    #print(nameInput.get())
-    recvThread.start()
-    name()
-    usrInput.bind("<Return>", send)
-    print("Step 6")
-    mainWind.mainloop()     #prevents infinite loop possibly
-        # print(data.decode())
-        #print('Received: ', repr(data.decode())) Echos back what server received
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket:
+        socket.connect((HOST, PORT))
+        Thread(target=receive).start()
+        set_name()
+        main_window.mainloop()
