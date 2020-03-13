@@ -2,7 +2,7 @@ import socket
 import tkinter
 from threading import Thread
 
-HOST = servIP
+HOST = '71.196.93.132'
 PORT = 6667
 
 mainWind = tkinter.Tk()     #create tkinter obj/window
