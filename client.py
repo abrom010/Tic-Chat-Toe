@@ -2,7 +2,7 @@ import socket
 import tkinter
 from threading import Thread
 
-HOST = '71.196.93.132'
+HOST = '10.0.0.174'
 PORT = 6667
 
 mainWind = tkinter.Tk()     #create tkinter obj/window
@@ -12,7 +12,7 @@ msg = tkinter.StringVar()   #create textbox at bottom of tkinter
 nameInput = tkinter.StringVar()
 nameInput.set("")
 
-def init():
+def name():
     #mainWind.wait_window()
     nameWin.title("")
     nameWin.lift()
@@ -27,10 +27,6 @@ def init():
 
     #userName.bind("<Return>", nameWin.destroy)
     #nameWin.destroy()
-
-def init2ElectricBoogaloo():
-    init()
-
 
 def recvServ():
     while True:
@@ -50,7 +46,6 @@ def nameSend(event=None):
 
 recvThread = Thread(target=recvServ)
 sendThread = Thread(target=send)
-initThread = Thread(target=init)
 
 textBox = tkinter.Listbox(mainWind, height=20, width=100)
 textBox.pack()
@@ -68,7 +63,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket:
     socket.connect((HOST, PORT))        #IP & port number
     #print(nameInput.get())
     recvThread.start()
-    initThread.start()
+    name()
     usrInput.bind("<Return>", send)
     print("Step 6")
     mainWind.mainloop()     #prevents infinite loop possibly
