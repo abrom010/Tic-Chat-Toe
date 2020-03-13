@@ -13,14 +13,15 @@ def accept_incoming_connections():
 
 def handle_client(connection):
     with connection:
-        name = bytes("default","utf8")
-        #name = connection.recv(1024)
+        #name = bytes("default","utf8")
+        name = connection.recv(1024)
         #print(name.decode()+" has connected")
-        #connection.send(bytes("Welcome, "+name.decode(),"utf8"))
+        print(name.decode()+" connected")
+        connection.send(bytes("Welcome, "+name.decode()+"!","utf8"))
         while True: #while connection exists and data is coming
-            data = connection.recv(1024) #buffer size
+            data = bytes(name.decode()+": "+connection.recv(1024).decode(),"utf8") #buffer size
             print((name.decode()+": "+data.decode()))
-            #connection.sendall(data) #Python specific function that sends entire
+            connection.sendall(data) #Python specific function that sends entire
 
 if __name__ == "__main__":           
     with socket(AF_INET, SOCK_STREAM) as server:
