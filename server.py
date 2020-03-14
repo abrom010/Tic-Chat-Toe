@@ -6,8 +6,8 @@ import time
 HOST = '100.64.7.96'
 PORT = 6667
 connections = {}
-serverTime = "%H:%M:%S"
-chatTime = "%H:%M"
+serverTime = "%H:%M:%S %p"
+chatTime = "%H:%M %p"
 
 def accept_incoming_connections():
     while True:
