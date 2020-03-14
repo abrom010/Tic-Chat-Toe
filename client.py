@@ -1,3 +1,4 @@
+# from tkinter import *
 import socket
 import tkinter
 from threading import Thread
@@ -31,7 +32,7 @@ def send_name(name,event=None):
     name_window.destroy()
     main_window.attributes('-topmost', True)
     main_window.focus_force()
-    entry = tkinter.Entry(main_window, textvariable=message, width=80)
+    entry = tkinter.Entry(main_window, textvariable=message, width=80, relief=tkinter.FLAT)
     entry.pack(side=tkinter.LEFT)
     entry.bind("<Return>", send)
 
@@ -45,7 +46,7 @@ def send(event=None):
         message.set("")
 
 if __name__ == "__main__":
-    text_box = tkinter.Listbox(main_window, height=20, width=100)
+    text_box = tkinter.Listbox(main_window, height=20, width=100, relief=tkinter.FLAT)
     text_box.pack()
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket:
