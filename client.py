@@ -3,8 +3,9 @@ import socket
 import tkinter
 import tkinter.font as font
 from threading import Thread
+import pickle
 
-HOST = '71.196.93.132'
+HOST = '100.64.7.96'
 PORT = 6667
 
 main_window = tkinter.Tk()
@@ -49,7 +50,12 @@ def send_name(name,event=None):
 def receive():
     while True:
         response = socket.recv(1024)
-        text_box.insert(tkinter.END, response.decode())
+        try:
+            list = pickle.loads(response)
+            for i in list:
+                print(i)
+        except:
+            text_box.insert(tkinter.END, response.decode())
 
 def send(event=None):
         socket.send(bytes(message.get(), "utf8"))

@@ -2,8 +2,9 @@ from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
 import tkinter
 import time
+import pickle
 
-HOST = '10.0.0.174'
+HOST = '100.64.7.96'
 PORT = 6667
 connections = {}
 serverTime = "%H:%M:%S %p"
@@ -18,10 +19,16 @@ def accept_incoming_connections():
 def handle_client(connection):
     with connection:
         name = connection.recv(1024)
-        print(time.strftime(serverTime) + " Log: " + name.decode()+" connected")
+        print(time.strftime(serverTime) + " Log: " + name.decode() + " connected")
+        for c in connections:
+            c.send(pickle.dumps([name.decode()]))
         connections.update({connection : name})
+        namesList = []
         for c in connections.keys():
-        	c.send(bytes(time.strftime(chatTime) + " Server: Welcome, "+name.decode()+"!","utf8"))
+            c.send(bytes(time.strftime(chatTime) + " Server: Welcome, " + name.decode()+"!","utf8"))
+            namesList.append(connections[c].decode())
+        initDict = pickle.dumps(namesList)
+        c.send(initDict)
         while True: #while connection exists and data is coming
             try:
                 data = bytes(time.strftime(chatTime) + " " + name.decode()+": "+connection.recv(1024).decode(),"utf8") #buffer size
@@ -33,7 +40,7 @@ def handle_client(connection):
                     c.send(bytes(time.strftime(chatTime) + " Server: " + name.decode()+" left","utf8"))
                 break
             for c in connections.keys():
-                    c.send(data) #Python specific function that sends entire
+                c.send(data) #Python specific function that sends entire
 
 if __name__ == "__main__":
     with socket(AF_INET, SOCK_STREAM) as server:
