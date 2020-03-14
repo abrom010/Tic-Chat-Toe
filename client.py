@@ -1,9 +1,10 @@
 # from tkinter import *
 import socket
 import tkinter
+import tkinter.font as font
 from threading import Thread
 
-HOST = '10.0.0.174'
+HOST = '71.196.93.132'
 PORT = 6667
 
 main_window = tkinter.Tk()
@@ -32,9 +33,12 @@ def send_name(name,event=None):
     name_window.destroy()
     main_window.attributes('-topmost', True)
     main_window.focus_force()
-    entry = tkinter.Entry(main_window, textvariable=message, width=80, relief=tkinter.FLAT)
+    entry = tkinter.Entry(main_window, textvariable=message, width=75, relief=tkinter.FLAT)
     entry.pack(side=tkinter.LEFT)
     entry.bind("<Return>", send)
+    buton = tkinter.Button(main_window, text="Send", command=send, width=20, relief=tkinter.FLAT)
+    buton['font'] = font.Font(family='Helvetica', size=12)
+    buton.pack()
 
 def receive():
     while True:
@@ -46,7 +50,7 @@ def send(event=None):
         message.set("")
 
 if __name__ == "__main__":
-    text_box = tkinter.Listbox(main_window, height=20, width=100, relief=tkinter.FLAT)
+    text_box = tkinter.Listbox(main_window, height=20, width=110, relief=tkinter.FLAT)
     text_box.pack()
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket:
