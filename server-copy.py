@@ -18,18 +18,18 @@ def handle_client(connection):
         print(name.decode()+" connected")
         connections.update({connection : name})
         connection.send(bytes("Welcome, "+name.decode()+"!","utf8"))
-        while True: #while connection exists and data is coming
-            try:
+        try:
+            while True: #while connection exists and data is coming
                 data = bytes(name.decode()+": "+connection.recv(1024).decode(),"utf8") #buffer size
-            except:
-                connection.close()
-                del connections[connection]
-                print(name.decode()+" left")
+                print(data.decode())
                 for c in connections.keys():
-                    c.send(bytes(name.decode()+" left","utf8"))
-                break
-            for c in connections.keys():
-                    c.send(data) #Python specific function that sends entire
+                    try:
+                        c.send(data) #Python specific function that sends entire
+                    except:
+                        print(connections[connection]+" left")
+                        del connections[c]
+        except:
+            del connections[connection]
 
 if __name__ == "__main__":           
     with socket(AF_INET, SOCK_STREAM) as server:
