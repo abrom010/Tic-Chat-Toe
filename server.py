@@ -3,7 +3,7 @@ from threading import Thread
 import tkinter
 import time
 
-HOST = '100.64.7.96'
+HOST = '10.0.0.174'
 PORT = 6667
 connections = {}
 serverTime = "%H:%M:%S %p"
@@ -20,16 +20,17 @@ def handle_client(connection):
         name = connection.recv(1024)
         print(time.strftime(serverTime) + " Log: " + name.decode()+" connected")
         connections.update({connection : name})
-        connection.send(bytes(strftime(chatTime) + " Server: Welcome, "+name.decode()+"!","utf8"))
+        for c in connections.keys():
+        	c.send(bytes(time.strftime(chatTime) + " Server: Welcome, "+name.decode()+"!","utf8"))
         while True: #while connection exists and data is coming
             try:
-                data = bytes(strftime(chatTime) + " " + name.decode()+": "+connection.recv(1024).decode(),"utf8") #buffer size
+                data = bytes(time.strftime(chatTime) + " " + name.decode()+": "+connection.recv(1024).decode(),"utf8") #buffer size
             except:
                 connection.close()
                 del connections[connection]
-                print(strftime(serverTime) + " Log: " + name.decode()+" left")
+                print(time.strftime(serverTime) + " Log: " + name.decode()+" left")
                 for c in connections.keys():
-                    c.send(bytes(strftime(chatTime) + " Server: " + name.decode()+" left","utf8"))
+                    c.send(bytes(time.strftime(chatTime) + " Server: " + name.decode()+" left","utf8"))
                 break
             for c in connections.keys():
                     c.send(data) #Python specific function that sends entire
