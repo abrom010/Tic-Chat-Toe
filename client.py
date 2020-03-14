@@ -3,7 +3,7 @@ import socket
 import tkinter
 from threading import Thread
 
-HOST = '71.196.93.132'
+HOST = '10.0.0.174'
 PORT = 6667
 
 main_window = tkinter.Tk()
