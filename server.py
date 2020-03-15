@@ -17,11 +17,11 @@ def accept_incoming_connections():
         Thread(target=handle_client, args=(connection,)).start()
 
 def handle_client(connection):
-    with connection:
+    #with connection:
         name = connection.recv(1024)
         print(time.strftime(serverTime) + " Log: " + name.decode() + " connected")
         for c in connections:
-            c.send(pickle.dumps([name.decode()]))
+            c.send(pickle.dumps([True, [name.decode()]]))
         connections.update({connection : name})
         namesList = []
         for c in connections.keys():
@@ -36,8 +36,10 @@ def handle_client(connection):
                 connection.close()
                 del connections[connection]
                 print(time.strftime(serverTime) + " Log: " + name.decode()+" left")
+                #nameList.remove(name.decode())
                 for c in connections.keys():
                     c.send(bytes(time.strftime(chatTime) + " Server: " + name.decode()+" left","utf8"))
+                    c.send(pickle.dumps([False, [name.decode()]]))
                 break
             for c in connections.keys():
                 c.send(data) #Python specific function that sends entire

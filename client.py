@@ -50,11 +50,18 @@ def receive():
         response = socket.recv(1024)
         try:
             list = pickle.loads(response)
-            for i in list:
+            print(list[0])
+            for i in list[1]:
                 #temp = i
-                users_box.insert(tkinter.END, i)
-                #print(i)
+
+                if list[0] == True:
+                    users_box.insert(tkinter.END, list[0])
+                elif list[0] == False:
+                    users_box.insert(tkinter.END, i + " left")
+                else:
+                    print("i")
         except:
+            #print("Hey")
             text_box.insert(tkinter.END, response.decode())
 
 def send(event=None):
