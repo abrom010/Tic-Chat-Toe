@@ -4,7 +4,7 @@ import tkinter
 import time
 import pickle
 
-HOST = '100.64.7.96'
+HOST = '10.0.0.174'
 PORT = 6667
 connections = {}
 serverTime = "%H:%M:%S %p"
