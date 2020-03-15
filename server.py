@@ -13,22 +13,35 @@ chatTime = "%H:%M %p"
 def accept_incoming_connections():
     while True:
         connection, addr = server.accept()
-        # connection.send(bytes("You have connected, please type in your name.","utf8"))    //Not needed, get name already from client side
         Thread(target=handle_client, args=(connection,)).start()
 
 def handle_client(connection):
-    #with connection:
         name = connection.recv(1024)
         print(time.strftime(serverTime) + " Log: " + name.decode() + " connected")
-        for c in connections:
-            c.send(pickle.dumps([True, [name.decode()]]))
         connections.update({connection : name})
+        print(connections)
+        obj = pickle.dumps([True, [name]])
+        data = pickle.loads(obj)
+        print(data[1][0])
+        for c in connections:
+            c.send(obj)
         namesList = []
+        welcome = time.strftime(chatTime) + " Server: Welcome, " + name.decode()+"!"
+        print(welcome)
+        bits = bytes(welcome,"utf8")
+        if bits.decode() == welcome:
+        	connection.send(bits)
+        else:
+        	print("self bits not same as welcome")
         for c in connections.keys():
-            c.send(bytes(time.strftime(chatTime) + " Server: Welcome, " + name.decode()+"!","utf8"))
+            if bits.decode() == welcome:
+                c.send(bits)
+            else:
+            	print("bits not same as welcome")
             namesList.append(connections[c].decode())
-        initDict = pickle.dumps(namesList)
-        c.send(initDict)
+            for thing in namesList:
+	            data = pickle.dumps([True,[thing]])
+	            connection.send(data)
         while True: #while connection exists and data is coming
             try:
                 data = bytes(time.strftime(chatTime) + " " + name.decode()+": "+connection.recv(1024).decode(),"utf8") #buffer size

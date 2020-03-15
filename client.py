@@ -5,7 +5,7 @@ import tkinter.font as font
 from threading import Thread
 import pickle
 
-HOST = '100.64.7.96'
+HOST = '10.0.0.174'
 PORT = 6667
 
 main_window = tkinter.Tk()
@@ -49,20 +49,36 @@ def receive():
     while True:
         response = socket.recv(1024)
         try:
-            list = pickle.loads(response)
-            print(list[0])
-            for i in list[1]:
-                #temp = i
-
-                if list[0] == True:
-                    users_box.insert(tkinter.END, list[0])
-                elif list[0] == False:
-                    users_box.insert(tkinter.END, i + " left")
+            raw = pickle.loads(response)
+            data = raw[1]
+            for string in raw[1]:
+                print(string)
+                if raw[0] == True:
+                    users_box.insert(tkinter.END, string)
+                    print("added")
+                elif raw[0] == False:
+                    for i in range(0,users_box.size()):
+                        users = users_box.get(0,tkinter.END)
+                        print(users)
+                        if users[i].decode() == string:
+                            users_box.delete(i)
+                            print("deleted")
+                        else: print("not found")
                 else:
-                    print("i")
+                    print("loose else")
         except:
-            #print("Hey")
-            text_box.insert(tkinter.END, response.decode())
+            print("exept")
+            try:
+                response = response.decode()
+            except:
+                response = response[0:len(response)-55]
+                try: 
+                    response = response.decode()
+                except:
+                    response = response[55:len(response)].decode()
+            text_box.insert(tkinter.END, response)
+            
+
 
 def send(event=None):
         socket.send(bytes(message.get(), "utf8"))
