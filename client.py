@@ -38,8 +38,6 @@ def send_name(name,event=None):
     main_window.focus_force()
     entry = tkinter.Entry(main_window, textvariable=message, width=80, relief=tkinter.FLAT)
     entry.grid(sticky="W", row=1)
-    users_box = tkinter.Listbox(main_window, width=20, height=22, relief=tkinter.FLAT)
-    users_box.grid(sticky="N", row=0&1, column=1)
     #entry.pack(side=tkinter.LEFT)
     entry.bind("<Return>", send)
     buton = tkinter.Button(main_window, text="Send", command=send, width=20, relief=tkinter.FLAT)
@@ -53,7 +51,9 @@ def receive():
         try:
             list = pickle.loads(response)
             for i in list:
-                print(i)
+                #temp = i
+                users_box.insert(tkinter.END, i)
+                #print(i)
         except:
             text_box.insert(tkinter.END, response.decode())
 
@@ -64,6 +64,8 @@ def send(event=None):
 if __name__ == "__main__":
     text_box = tkinter.Listbox(main_window, height=20, width=70, relief=tkinter.FLAT, font=fontTemplate)
     text_box.grid(sticky="W", row=0)
+    users_box = tkinter.Listbox(main_window, width=20, height=22, relief=tkinter.FLAT)
+    users_box.grid(sticky="N", row=0&1, column=1)
     #text_box.pack()
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket:
