@@ -5,7 +5,7 @@ import tkinter.font as font
 from threading import Thread
 import pickle
 
-HOST = '10.0.0.174'
+HOST = '100.64.7.96'
 PORT = 6667
 
 main_window = tkinter.Tk()
@@ -34,7 +34,7 @@ def send_name(name,event=None):
     if name == "": name = "guest"
     socket.send(bytes(name, "utf8"))
     name_window.destroy()
-    #main_window.attributes('-topmost', True)
+
     main_window.focus_force()
     entry = tkinter.Entry(main_window, textvariable=message, width=80, relief=tkinter.FLAT)
     entry.grid(sticky="W", row=1)
@@ -43,42 +43,17 @@ def send_name(name,event=None):
     buton = tkinter.Button(main_window, text="Send", command=send, width=20, relief=tkinter.FLAT)
     buton['font'] = font.Font(family='Helvetica', size=12)
     buton.grid(sticky="E", row=1)
-    #buton.pack()
 
 def receive():
     while True:
         response = socket.recv(1024)
         try:
-            raw = pickle.loads(response)
-            data = raw[1]
-            for string in raw[1]:
-                print(string)
-                if raw[0] == True:
-                    users_box.insert(tkinter.END, string)
-                    print("added")
-                elif raw[0] == False:
-                    for i in range(0,users_box.size()):
-                        users = users_box.get(0,tkinter.END)
-                        print(users)
-                        if users[i].decode() == string:
-                            users_box.delete(i)
-                            print("deleted")
-                        else: print("not found")
-                else:
-                    print("loose else")
+            data = pickle.loads(response)
+            users_box.delete(0, tkinter.END)
+            for name in data:
+                users_box.insert(tkinter.END, name)
         except:
-            print("exept")
-            try:
-                response = response.decode()
-            except:
-                response = response[0:len(response)-55]
-                try: 
-                    response = response.decode()
-                except:
-                    response = response[55:len(response)].decode()
-            text_box.insert(tkinter.END, response)
-            
-
+            text_box.insert(tkinter.END, response.decode())
 
 def send(event=None):
         socket.send(bytes(message.get(), "utf8"))
