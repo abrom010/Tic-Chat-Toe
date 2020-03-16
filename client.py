@@ -7,6 +7,7 @@ import pickle
 
 HOST = '100.64.7.96'
 PORT = 6667
+msgSize = 60
 
 main_window = tkinter.Tk()
 main_window.title("Chat Lobby")
@@ -53,7 +54,12 @@ def receive():
             for name in data:
                 users_box.insert(tkinter.END, name)
         except:
-            text_box.insert(tkinter.END, response.decode())
+            message = response.decode()
+            while len(message) > msgSize:
+                text_box.insert(tkinter.END, message[:msgSize])
+                message = message[msgSize:]
+            text_box.insert(tkinter.END, message)
+            #text_box.insert(tkinter.END, "\n") //Need to leave some space between messages
 
 def send(event=None):
         socket.send(bytes(message.get(), "utf8"))

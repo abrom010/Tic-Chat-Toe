@@ -19,7 +19,11 @@ def accept_incoming_connections():
 def handle_client(connection):
         name = connection.recv(1024).decode()
         print(time.strftime(serverTime) + " Log: " + name + " connected")
-        connection.send(bytes(time.strftime(chatTime) + ": Welcome, " + name, "utf8"))
+        connection.send(bytes(time.strftime(chatTime) + " Server: Welcome, " + name, "utf8"))
+
+        for c in connections.keys():
+            c.send(bytes(time.strftime(chatTime) + " Server: " + name + " has joined the chat!", "utf8"))
+
         serverNameList.append(name)
         connections.update({connection : name})
 
@@ -28,20 +32,22 @@ def handle_client(connection):
 
         while True: #while connection exists and data is coming
             try:
-                data = bytes(time.strftime(chatTime) + " " + name+": "+connection.recv(1024).decode(),"utf8") #buffer size
+                message = connection.recv(1024).decode()
+                message = time.strftime(chatTime) + " " + name+": " + message
+
+                for c in connections.keys():
+                    c.send(bytes(message, "utf8"))
+                #data = bytes(time.strftime(chatTime) + " " + name+": "+connection.recv(1024).decode(),"utf8") #buffer size
             except:
                 connection.close()
                 del connections[connection]
                 serverNameList.remove(name)
-                print(time.strftime(serverTime) + " Log: " + name+" left")
+                print(time.strftime(serverTime) + " Log: " + name + " left")
 
                 for c in connections.keys():
-                    c.send(bytes(time.strftime(chatTime) + " Server: " + name+" has left","utf8"))
+                    c.send(bytes(time.strftime(chatTime) + " Server: " + name + " has left","utf8"))
                     c.send(pickle.dumps(serverNameList))
                 break
-
-            for c in connections.keys():
-                c.send(data) #Python specific function that sends entire
 
 if __name__ == "__main__":
     with socket(AF_INET, SOCK_STREAM) as server:
