@@ -5,11 +5,9 @@ import tkinter.font as font
 from threading import Thread
 import pickle
 
-<<<<<<< HEAD
-HOST = '10.0.0.174'
-=======
-HOST = '71.196.93.132'
->>>>>>> d2a98016cb5cbb1e432a2417197aafb1968bad22
+with open("config.txt","r") as file:
+    HOST = file.read()
+
 PORT = 6667
 msgSize = 60
 

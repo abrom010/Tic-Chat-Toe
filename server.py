@@ -4,7 +4,10 @@ import tkinter
 import time
 import pickle
 
-HOST = '100.64.7.96'
+
+with open("config.txt","r") as file:
+	HOST = file.read()
+	
 PORT = 6667
 connections = {}
 serverTime = "%H:%M:%S %p"
