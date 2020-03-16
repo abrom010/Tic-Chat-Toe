@@ -5,7 +5,7 @@ import tkinter.font as font
 from threading import Thread
 import pickle
 
-HOST = '100.64.7.96'
+HOST = '10.0.0.174'
 PORT = 6667
 msgSize = 60
 
