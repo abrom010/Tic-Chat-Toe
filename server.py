@@ -6,8 +6,8 @@ import pickle
 
 
 with open("config.txt","r") as file:
-	HOST = file.read()
-	
+	HOST = file.read().splitlines()[0]
+
 PORT = 6667
 connections = {}
 serverTime = "%H:%M:%S %p"

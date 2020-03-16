@@ -2,11 +2,16 @@
 import socket
 import tkinter
 import tkinter.font as font
+import sys
 from threading import Thread
 import pickle
 
 with open("config.txt","r") as file:
-    HOST = file.read()
+    hosts = file.read().splitlines()
+    if (len(sys.argv) == 2):
+        HOST = hosts[0]
+    elif (len(sys.argv) == 1):
+        HOST = hosts[1]
 
 PORT = 6667
 msgSize = 60
