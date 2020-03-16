@@ -5,7 +5,11 @@ import tkinter.font as font
 from threading import Thread
 import pickle
 
+<<<<<<< HEAD
 HOST = '10.0.0.174'
+=======
+HOST = '71.196.93.132'
+>>>>>>> d2a98016cb5cbb1e432a2417197aafb1968bad22
 PORT = 6667
 msgSize = 60
 
@@ -55,9 +59,10 @@ def receive():
                 users_box.insert(tkinter.END, name)
         except:
             message = response.decode()
+            lastSpace = message.rfind(' ')
             while len(message) > msgSize:
-                text_box.insert(tkinter.END, message[:msgSize])
-                message = message[msgSize:]
+                text_box.insert(tkinter.END, message[:lastSpace])
+                message = message[lastSpace + 1:]
             text_box.insert(tkinter.END, message)
             #text_box.insert(tkinter.END, "\n") //Need to leave some space between messages
 
