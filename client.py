@@ -8,9 +8,9 @@ import pickle
 
 with open("config.txt","r") as file:
     hosts = file.read().splitlines()
-    if (len(sys.argv) == 2):
+    if (len(sys.argv) == 1):
         HOST = hosts[0]
-    elif (len(sys.argv) == 1):
+    elif (len(sys.argv) == 2):
         HOST = hosts[1]
 
 PORT = 6667
