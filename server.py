@@ -18,30 +18,18 @@ def accept_incoming_connections():
 def handle_client(connection):
         name = connection.recv(1024)
         print(time.strftime(serverTime) + " Log: " + name.decode() + " connected")
-        connections.update({connection : name})
-        print(connections)
-        obj = pickle.dumps([True, [name]])
-        data = pickle.loads(obj)
-        print(data[1][0])
         for c in connections:
-            c.send(obj)
+            c.send(pickle.dumps([True, [name]]))
         namesList = []
-        welcome = time.strftime(chatTime) + " Server: Welcome, " + name.decode()+"!"
-        print(welcome)
-        bits = bytes(welcome,"utf8")
-        if bits.decode() == welcome:
-        	connection.send(bits)
-        else:
-        	print("self bits not same as welcome")
+        namesList.append(name.decode())
         for c in connections.keys():
-            if bits.decode() == welcome:
-                c.send(bits)
-            else:
-            	print("bits not same as welcome")
+            #c.send(bytes(time.strftime(chatTime) + " Server: Welcome, " + name.decode()+"!","utf8"))
             namesList.append(connections[c].decode())
-            for thing in namesList:
-	            data = pickle.dumps([True,[thing]])
-	            connection.send(data)
+        print(namesList)
+        for thing in namesList:
+            data = pickle.dumps([True,[thing]])
+            connection.send(data)
+        connections.update({connection : name})
         while True: #while connection exists and data is coming
             try:
                 data = bytes(time.strftime(chatTime) + " " + name.decode()+": "+connection.recv(1024).decode(),"utf8") #buffer size
