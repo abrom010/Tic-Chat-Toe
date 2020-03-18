@@ -8,13 +8,13 @@ class Box:
         self.isDiagonal = isDiagonal
 
     #call with an argument to fill box with o, otherwise with x
-    def fill(self,shape=0):
+    def fill(self,hasCircle=False):
         self.isFilled = True
 
-        if shape==0:
-            pass
-        else:
+        if hasCircle:
             self.hasCircle = True
+        else:
+            pass
 
 ''' CLASS '''
 
@@ -46,20 +46,20 @@ class Board:
                         searchList.update({name:box})
             
             if len(searchList) > 1:
-                for box in searchList:
+                for name in searchList.keys():
                     win_string = ""
-                    if "up" in box:
+                    if "up" in name:
                         win_string+= "bot"
                     else:
                         win_string+= "up"
 
-                    if "left" in box:
+                    if "left" in name:
                         win_string+= "right"
                     else:
                         win_string+= "left"
 
-                    for box in searchList:
-                        if box == win_string:
+                    for name in searchList.keys():
+                        if name == win_string:
                             if center.hasCircle == True:
                                 self.circle_won = True
                             else:
