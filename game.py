@@ -35,18 +35,18 @@ for box_name in board.boxes.keys():
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            running = False3
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            x, y = event.pos
+            for rectangle in rects:
+                if rectangle.collidepoint(x, y):
+                    board.boxes[list_of_box_names[rects.index(rectangle)]].fill()
 
     screen.fill(black)
 
     for rect in rects:
         pygame.draw.rect(screen, white, rect)
-
-    if event.type == pygame.MOUSEBUTTONDOWN:
-            x, y = event.pos
-            for rectangle in rects:
-                if rectangle.collidepoint(x, y):
-                    board.boxes[list_of_box_names[rects.index(rectangle)]].fill()
 
     for box in board.boxes.values():
         print(box.isFilled)
