@@ -12,9 +12,8 @@ class Box:
 
 ''' CLASS '''
 class Board:
-    cross_won = False
     circle_won = False
-    game_over = False
+    winners = None
 
     upleft,upmid,upright,midleft,center,midright,botleft,botmid,botright = \
     Box(),Box(),Box(),Box(),Box(),Box(),Box(),Box(),Box()
@@ -29,26 +28,33 @@ class Board:
 
     #checks for game_over
     def check(self):
+        game_over = False
         for group in self.groups:
-            for boxes in group.items():
-                winner = boxes
+            for boxes in group.values():
+                winners = boxes
                 ctr = 0
-                first = group.keys()[0]
-                print(first)
+                first = boxes[0]
 
-                # if first.isFilled:
-                #     for box in boxes:
-                #         if box != first and box.isFilled and box.hasCircle == first.hasCircle:
-                #             ctr+=1
-                #
-                #         if ctr == 2:
-                #             if first.hasCircle == True:
-                #                 self.circle_won = True
-                #             else:
-                #                 self.cross_won = True
-                #             self.game_over = True
-                #             return winner
+                if first.isFilled:
+                    for box in boxes:
+                        if box != first and box.isFilled and box.hasCircle == first.hasCircle:
+                            ctr+=1
+
+                        if ctr == 2:
+                            if first.hasCircle == True:
+                                self.circle_won = True
+                            game_over = True
+
+                            for item in group:
+                                if group[item] == winners:
+                                    self.winners = item
+
+                            return game_over
+        return game_over
 
 if __name__ == "__main__":
     board = Board()
-    board.check()
+    #for box in board.rows["toprow"]:
+     #   box.fill()
+
+    print(board.check())
