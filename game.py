@@ -35,7 +35,7 @@ for box_name in board.boxes.keys():
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False3
+            running = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             x, y = event.pos
