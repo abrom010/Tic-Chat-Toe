@@ -22,9 +22,9 @@ class Board:
 
     boxes = {"upleft":upleft,"upmid":upmid,"upright":upright,"midleft":midleft,"center":center,"midright":midright,"botleft":botleft,"botmid":botmid,"botright":botright}
 
-    rows = [[upleft,upmid,upright],[midleft,center,midright],[botleft,botmid,botright]]
-    columns = [[upleft,midleft,botleft],[upmid,center,botmid],[upright,midright,botright]]
-    diagonals = [[upleft,center,botright],[upright,center,botleft]]
+    rows = {"toprow":[upleft,upmid,upright], "midrow":[midleft,center,midright], "botrow":[botleft,botmid,botright]}
+    columns = {"leftcol":[upleft,midleft,botleft], "midcol":[upmid,center,botmid], "rightcol":[upright,midright,botright]}
+    diagonals = {"decrease":[upleft,center,botright], "increase":[upright,center,botleft]}
 
     groups = [rows,columns,diagonals]
 
