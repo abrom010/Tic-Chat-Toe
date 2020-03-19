@@ -3,6 +3,8 @@ from threading import Thread
 import tkinter
 import time
 import pickle
+import os
+import sys
 
 PORT = 6667
 connections = {}
@@ -10,12 +12,16 @@ serverTime = "%H:%M:%S %p"
 chatTime = "%H:%M %p"
 serverNameList = []
 
+for filename in os.listdir():
+    if "log.txt" in filename:
+        os.remove(filename)
+
 with open("config.txt","r") as file:
 	HOST = file.read().splitlines()[0]
 
 filename = time.strftime(serverTime).replace(":", "_") + "log.txt"
 
-with open(filename, "a+") as file:
+with open(filename, "a+"):
     pass
 #sessionHistory = open(filename, "a+")
 
@@ -81,4 +87,4 @@ if __name__ == "__main__":
         ACCEPT_THREAD.start()
         ACCEPT_THREAD.join()
         server.close()
-        sessionHistory.close()
+        os.remove(filename)
