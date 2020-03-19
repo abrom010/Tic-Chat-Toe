@@ -34,6 +34,7 @@ class Board:
     def check(self):
         for group in self.groups:
             for boxes in group:
+                winner = boxes
                 ctr = 0
                 first = boxes[0]
 
@@ -48,9 +49,8 @@ class Board:
                             else:
                                 self.cross_won = True
                             self.game_over = True
-                            break
+                            return winner
 
-        return(self.game_over)
 
         ''' BIG FUNCTION '''
 
@@ -58,4 +58,4 @@ class Board:
 
 if __name__ == "__main__":
     board = Board()
-    print(board.check())
+    board.check()
