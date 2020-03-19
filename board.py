@@ -44,7 +44,7 @@ class Board:
                             if first.hasCircle == True:
                                 self.circle_won = True
                             game_over = True
-                            
+
                             for item in group:
                                 if group[item] == winners:
                                     self.winners = item
@@ -54,8 +54,8 @@ class Board:
 
 if __name__ == "__main__":
     board = Board()
-    for box in board.rows["toprow"]:
-        box.fill()
-    
+
+    #for box in board.rows["toprow"]:
+     #   box.fill()
+
     print(board.check())
- 
