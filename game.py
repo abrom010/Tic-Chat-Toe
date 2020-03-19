@@ -13,6 +13,7 @@ space = 2
 length = (screen_length-4*space)/3
 board = board.Board()
 
+#    name       rectangle                x                  y               side_length
 topleft_rect = pygame.Rect         (space,              space,              length, length)
 topcenter_rect = pygame.Rect       (2*space+length,     space,              length, length)
 topright_rect = pygame.Rect        (3*space+2*length,   space,              length, length)
