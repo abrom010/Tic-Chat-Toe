@@ -13,17 +13,17 @@ space = 2
 length = (screen_length-4*space)/3
 board = board.Board()
 
-topleft_rect = pygame.Rect(space, space, length, length)
-topcenter_rect = pygame.Rect(2*space+length, space, length, length)
-topright_rect = pygame.Rect(3*space+2*length, space, length, length)
+topleft_rect = pygame.Rect         (space,              space,              length, length)
+topcenter_rect = pygame.Rect       (2*space+length,     space,              length, length)
+topright_rect = pygame.Rect        (3*space+2*length,   space,              length, length)
 
-midleft_rect = pygame.Rect(space, 2*space+length, length, length)
-mid_rect = pygame.Rect(2*space+length, 2*space+length, length, length)
-midright_rect = pygame.Rect(3*space+2*length, 2*space+length, length, length)
+midleft_rect = pygame.Rect         (space,              2*space+length,     length, length)
+mid_rect = pygame.Rect             (2*space+length,     2*space+length,     length, length)
+midright_rect = pygame.Rect        (3*space+2*length,   2*space+length,     length, length)
 
-bottomleft_rect = pygame.Rect(space, 3*space+2*length, length, length)
-bottomcenter_rect = pygame.Rect(2*space+length, 3*space+2*length, length, length)
-bottomright_rect = pygame.Rect(3*space+2*length, 3*space+2*length, length, length)
+bottomleft_rect = pygame.Rect      (space,              3*space+2*length,   length, length)
+bottomcenter_rect = pygame.Rect    (2*space+length,     3*space+2*length,   length, length)
+bottomright_rect = pygame.Rect     (3*space+2*length,   3*space+2*length,   length, length)
 
 rects = [topleft_rect,topcenter_rect,topright_rect,midleft_rect,mid_rect,midright_rect,bottomleft_rect,\
 bottomcenter_rect,bottomright_rect]
