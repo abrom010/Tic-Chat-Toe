@@ -54,8 +54,8 @@ class Board:
 
 if __name__ == "__main__":
     board = Board()
-    #for box in board.rows["toprow"]:
-     #   box.fill()
+    for box in board.rows["toprow"]:
+        box.fill()
     
     print(board.check())
  

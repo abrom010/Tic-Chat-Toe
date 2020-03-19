@@ -4,7 +4,6 @@ import tkinter
 import time
 import pickle
 
-
 with open("config.txt","r") as file:
 	HOST = file.read().splitlines()[0]
 
