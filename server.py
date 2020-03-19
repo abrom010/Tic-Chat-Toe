@@ -28,16 +28,16 @@ def handle_client(connection):
         name = connection.recv(1024).decode()
         print(time.strftime(serverTime) + " Log: " + name + " connected")
 
-        #with open(filename, "a") as file:
-            #file.write(time.strftime(serverTime) + " Log: " + name + " connected\n")
-        with open(filename, "r") as file:
+        with open(filename, "a") as file:
+            file.write(time.strftime(serverTime) + " Log: " + name + " connected\n")
+        '''with open(filename, "r") as file:
             #connection.send(bytes(file.read(), "utf8"))
             #connection.send(bytes(file.read(), "utf8"))
             if file.read() == "":
                 print("OK")
             else:
                 connection.send(bytes(file.read(), "utf8"))
-                print(file.read())
+                print(file.read())'''
         connection.send(bytes(time.strftime(chatTime) + " Server: Welcome, " + name, "utf8"))
 
         for c in connections.keys():
@@ -52,8 +52,8 @@ def handle_client(connection):
         while True: #while connection exists and data is coming
             try:
                 message = connection.recv(1024).decode()
-                #with open(filename, "a") as file:
-                    #file.write(time.strftime(serverTime) + " " + name + ": " + message + "\n")
+                with open(filename, "a") as file:
+                    file.write(time.strftime(serverTime) + " " + name + ": " + message + "\n")
                 message = time.strftime(chatTime) + " " + name+": " + message
 
                 for c in connections.keys():
@@ -64,8 +64,8 @@ def handle_client(connection):
                 del connections[connection]
                 serverNameList.remove(name)
 
-                #with open(filename, "a") as file:
-                    #file.write(time.strftime(serverTime) + " Log: " + name + " left" + "\n")
+                with open(filename, "a") as file:
+                    file.write(time.strftime(serverTime) + " Log: " + name + " left" + "\n")
                 print(time.strftime(serverTime) + " Log: " + name + " left")
 
                 for c in connections.keys():
