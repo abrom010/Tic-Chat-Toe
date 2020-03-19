@@ -30,23 +30,24 @@ class Board:
     #checks for game_over
     def check(self):
         for group in self.groups:
-            for boxes in group:
+            for boxes in group.items():
                 winner = boxes
                 ctr = 0
-                first = boxes[0]
+                first = group.keys()[0]
+                print(first)
 
-                if first.isFilled:
-                    for box in boxes:
-                        if box != first and box.isFilled and box.hasCircle == first.hasCircle:
-                            ctr+=1
-
-                        if ctr == 2:
-                            if first.hasCircle == True:
-                                self.circle_won = True
-                            else:
-                                self.cross_won = True
-                            self.game_over = True
-                            return winner
+                # if first.isFilled:
+                #     for box in boxes:
+                #         if box != first and box.isFilled and box.hasCircle == first.hasCircle:
+                #             ctr+=1
+                #
+                #         if ctr == 2:
+                #             if first.hasCircle == True:
+                #                 self.circle_won = True
+                #             else:
+                #                 self.cross_won = True
+                #             self.game_over = True
+                #             return winner
 
 if __name__ == "__main__":
     board = Board()

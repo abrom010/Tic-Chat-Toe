@@ -4,15 +4,20 @@ import tkinter
 import time
 import pickle
 
-
-with open("config.txt","r") as file:
-	HOST = file.read().splitlines()[0]
-
 PORT = 6667
 connections = {}
 serverTime = "%H:%M:%S %p"
 chatTime = "%H:%M %p"
 serverNameList = []
+
+with open("config.txt","r") as file:
+	HOST = file.read().splitlines()[0]
+
+filename = time.strftime(serverTime).replace(":", "_") + "log.txt"
+
+with open(filename, "a+") as file:
+    pass
+#sessionHistory = open(filename, "a+")
 
 def accept_incoming_connections():
     while True:
@@ -22,6 +27,17 @@ def accept_incoming_connections():
 def handle_client(connection):
         name = connection.recv(1024).decode()
         print(time.strftime(serverTime) + " Log: " + name + " connected")
+
+        #with open(filename, "a") as file:
+            #file.write(time.strftime(serverTime) + " Log: " + name + " connected\n")
+        with open(filename, "r") as file:
+            #connection.send(bytes(file.read(), "utf8"))
+            #connection.send(bytes(file.read(), "utf8"))
+            if file.read() == "":
+                print("OK")
+            else:
+                connection.send(bytes(file.read(), "utf8"))
+                print(file.read())
         connection.send(bytes(time.strftime(chatTime) + " Server: Welcome, " + name, "utf8"))
 
         for c in connections.keys():
@@ -36,6 +52,8 @@ def handle_client(connection):
         while True: #while connection exists and data is coming
             try:
                 message = connection.recv(1024).decode()
+                #with open(filename, "a") as file:
+                    #file.write(time.strftime(serverTime) + " " + name + ": " + message + "\n")
                 message = time.strftime(chatTime) + " " + name+": " + message
 
                 for c in connections.keys():
@@ -45,6 +63,9 @@ def handle_client(connection):
                 connection.close()
                 del connections[connection]
                 serverNameList.remove(name)
+
+                #with open(filename, "a") as file:
+                    #file.write(time.strftime(serverTime) + " Log: " + name + " left" + "\n")
                 print(time.strftime(serverTime) + " Log: " + name + " left")
 
                 for c in connections.keys():
@@ -60,3 +81,4 @@ if __name__ == "__main__":
         ACCEPT_THREAD.start()
         ACCEPT_THREAD.join()
         server.close()
+        sessionHistory.close()
