@@ -11,7 +11,6 @@ class Box:
             self.hasCircle = True
 
 ''' CLASS '''
-
 class Board:
     cross_won = False
     circle_won = False
@@ -27,8 +26,6 @@ class Board:
     diagonals = {"decrease":[upleft,center,botright], "increase":[upright,center,botleft]}
 
     groups = [rows,columns,diagonals]
-
-    ''' BIG FUNCTION '''
 
     #checks for game_over
     def check(self):
@@ -50,11 +47,6 @@ class Board:
                                 self.cross_won = True
                             self.game_over = True
                             return winner
-
-
-        ''' BIG FUNCTION '''
-
-''' CLASS '''
 
 if __name__ == "__main__":
     board = Board()
