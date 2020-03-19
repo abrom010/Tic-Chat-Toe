@@ -30,10 +30,11 @@ class Board:
     #checks for game_over
     def check(self):
         for group in self.groups:
-            for boxes in group:
-                winner = boxes
+            for boxes in group.values():
+                winners = boxes
                 ctr = 0
                 first = boxes[0]
+
 
                 if first.isFilled:
                     for box in boxes:
@@ -46,8 +47,18 @@ class Board:
                             else:
                                 self.cross_won = True
                             self.game_over = True
-                            return winner
+                            
+                            
+                            for item in group:
+                                if group[item] == winners:
+                                    return item
+                            
 
 if __name__ == "__main__":
     board = Board()
-    board.check()
+    #for box in board.rows["toprow"]:
+     #   box.fill()
+    
+    print(board.check())
+    print(board.game_over)
+ 
