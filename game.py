@@ -39,15 +39,8 @@ while running:
 
     screen.fill(black)
 
-    pygame.draw.rect(screen, white, topleft_rect)
-    pygame.draw.rect(screen, white, topcenter_rect)
-    pygame.draw.rect(screen, white, topright_rect)
-    pygame.draw.rect(screen, white, midleft_rect)
-    pygame.draw.rect(screen, white, mid_rect)
-    pygame.draw.rect(screen, white, midright_rect)
-    pygame.draw.rect(screen, white, bottomleft_rect)
-    pygame.draw.rect(screen, white, bottomcenter_rect)
-    pygame.draw.rect(screen, white, bottomright_rect)
+    for rect in rects:
+        pygame.draw.rect(screen, white, rect)
 
     if event.type == pygame.MOUSEBUTTONDOWN:
             x, y = event.pos
