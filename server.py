@@ -3,14 +3,8 @@ from threading import Thread
 import tkinter
 import time
 import pickle
-<<<<<<< HEAD
-
-with open("config.txt","r") as file:
-	HOST = file.read().splitlines()[0]
-=======
 import os
 import sys
->>>>>>> 11e4632341a823b9bf936ede3b1d655de86d0680
 
 PORT = 6667
 connections = {}
