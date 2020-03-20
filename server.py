@@ -13,30 +13,40 @@ chatTime = "%H:%M %p"
 serverNameList = []
 
 for filename in os.listdir():
-    if "log.txt" in filename:
+    if ("log.txt" in filename) or ("users.txt" in filename):
         os.remove(filename)
 
 with open("config.txt","r") as file:
 	HOST = file.read().splitlines()[0]
 
-filename = time.strftime(serverTime).replace(":", "_") + "log.txt"
+logfile = time.strftime("%H:%M:%S").replace(":", "_") + "log.txt"
+usersfile = time.strftime("%H:%M").replace(":","_") + "users.txt"
+userSession = {}
 
-with open(filename, "a+"):
-    pass
-#sessionHistory = open(filename, "a+")
+#sessionHistory = open(logfile, "a+")
 
 def accept_incoming_connections():
     while True:
         connection, addr = server.accept()
-        Thread(target=handle_client, args=(connection,)).start()
+        #print(addr)
+        Thread(target=handle_client, args=(connection, addr)).start()
 
-def handle_client(connection):
+def handle_client(connection, addr):
         name = connection.recv(1024).decode()
         print(time.strftime(serverTime) + " Log: " + name + " connected")
+        userSession = {"Time":time.strftime("%H:%M:%S"), "IP":addr[0], "username":name}
+        #print(connection)
 
-        with open(filename, "a") as file:
+        with open(usersfile, "a") as file:
+            tempString = ""
+            for i in userSession:
+                tempString += i + ": " + userSession[i] + ", "
+            file.write(tempString[:len(tempString)-2] + "\n")
+            file.close()
+
+        with open(logfile, "a") as file:
             file.write(time.strftime(serverTime) + " Log: " + name + " connected\n")
-        '''with open(filename, "r") as file:
+        '''with open(logfile, "r") as file:
             #connection.send(bytes(file.read(), "utf8"))
             #connection.send(bytes(file.read(), "utf8"))
             if file.read() == "":
@@ -58,7 +68,7 @@ def handle_client(connection):
         while True: #while connection exists and data is coming
             try:
                 message = connection.recv(1024).decode()
-                with open(filename, "a") as file:
+                with open(logfile, "a") as file:
                     file.write(time.strftime(serverTime) + " " + name + ": " + message + "\n")
                 message = time.strftime(chatTime) + " " + name+": " + message
 
@@ -70,7 +80,7 @@ def handle_client(connection):
                 del connections[connection]
                 serverNameList.remove(name)
 
-                with open(filename, "a") as file:
+                with open(logfile, "a") as file:
                     file.write(time.strftime(serverTime) + " Log: " + name + " left" + "\n")
                 print(time.strftime(serverTime) + " Log: " + name + " left")
 
@@ -87,4 +97,5 @@ if __name__ == "__main__":
         ACCEPT_THREAD.start()
         ACCEPT_THREAD.join()
         server.close()
-        os.remove(filename)
+        os.remove(logfile)
+        os.remove(usersfile)
